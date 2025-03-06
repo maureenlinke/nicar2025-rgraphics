@@ -4,31 +4,30 @@
 
 install.packages('tidyverse')
 install.packages('ggplot2')
-install.packages('here')
 
 library(tidyverse)
 library(ggplot2)
-library(here)
 
+#Code that manipulates the data
 df <- read_csv("/Users/stamms/Documents/r_projects/nicar_2025/import/dataset.csv") %>%
   #Filter out rows that have missing values or no entries
-  filter(!is.na(los_days_at_current_facility)) %>%
+  filter(!is.na(number_of_days)) %>%
   #Bucket our data
-  mutate(new_column = ifelse(los_days_at_current_facility >= 10 & los_days_at_current_facility <= 14, "highlight", "none"))
+  mutate(new_column = ifelse(number_of_days >= 10 & number_of_days <= 14, "highlight", "none"))
 view(df)
 
-#Start of code that visualizes the data
-chart <-ggplot(df, aes(x = los_days_at_current_facility, fill = new_column)) + 
+#Code that visualizes the data
+chart <-ggplot(df, aes(x = number_of_days, fill = new_column)) + 
   #Pick our chart type
   geom_histogram(binwidth = 1, color = "white", position = "identity") + 
   #Customize the colors
   scale_fill_manual(values = c("highlight" = "orange4", "none" = "orange")) +  
-  #This gets rid of a bunch of stuff you don't need
-  theme_minimal() +
   #Add a line at the mean point
-  geom_vline(aes(xintercept=mean(los_days_at_current_facility)),
-             color="black", linetype="dashed", size=1)
+  geom_vline(aes(xintercept=mean(number_of_days)),
+             color="black", linetype="dashed", size=1) +
+  #This gets rid of a bunch of stuff you don't need
+  theme_minimal()
 chart
 
 #Export your file
-ggsave(chart, filename=here("Documents/r_projects/nicar_2025/export/my_export.pdf"), device="pdf", width=700, height=450, units=c("px"), dpi=72)
+ggsave(chart, filename=("/Users/stamms/Documents/r_projects/nicar_2025/export/my_export.pdf"), device="pdf", width=700, height=450, units=c("px"), dpi=72)
