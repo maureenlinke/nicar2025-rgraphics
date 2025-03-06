@@ -8,8 +8,11 @@ install.packages('ggplot2')
 library(tidyverse)
 library(ggplot2)
 
+setwd("Users/linkem/Documents/nicar2025-rgraphics")
+
+
 #Code that manipulates the data
-df <- read_csv("/Users/stamms/Documents/r_projects/nicar_2025/import/dataset.csv") %>%
+df <- read_csv("import/dataset.csv") %>%
   #Filter out rows that have missing values or no entries
   filter(!is.na(number_of_days)) %>%
   #Bucket our data
@@ -30,4 +33,4 @@ chart <-ggplot(df, aes(x = number_of_days, fill = new_column)) +
 chart
 
 #Export your file
-ggsave(chart, filename=("/Users/stamms/Documents/r_projects/nicar_2025/export/my_export.pdf"), device="pdf", width=700, height=450, units=c("px"), dpi=72)
+ggsave(chart, filename=("export/my_export.pdf"), device="pdf", width=700, height=450, units=c("px"), dpi=72)
